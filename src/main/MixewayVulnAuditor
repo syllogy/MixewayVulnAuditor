@@ -1,0 +1,24 @@
+from data_loader.load_vuln_data import *
+from model.rnn_model import *
+
+
+data_train_sentence, data_test_sentence, labels_train, labels_test, tokenizer = load_data_from_local_source()
+model = build_rnn_model(tokenizer)
+
+num_epochs = 10
+print("Training the model")
+history = model.fit(data_train_sentence, labels_train, epochs=num_epochs, validation_data=(data_test_sentence, labels_test    ))
+
+import matplotlib.pyplot as plt
+
+
+def plot_graphs(history, string):
+    plt.plot(history.history[string])
+    plt.plot(history.history['val_'+string])
+    plt.xlabel("Epochs")
+    plt.ylabel(string)
+    plt.legend([string, 'val_'+string])
+    plt.show()
+
+plot_graphs(history, 'accuracy')
+plot_graphs(history, 'loss')
