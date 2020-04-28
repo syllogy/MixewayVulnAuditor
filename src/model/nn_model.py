@@ -10,5 +10,5 @@ def build_nn_model(tokenizer, layers):
         tf.keras.layers.Dense(1, activation='sigmoid')
     ])
     model.summary()
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy','precision','recall'])
     return model

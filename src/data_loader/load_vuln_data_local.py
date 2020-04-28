@@ -3,6 +3,7 @@ import pandas as pd
 from pathlib import Path
 import os
 import re
+import csv
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
@@ -28,19 +29,14 @@ def print_info(data_train_sequence, data_test_sequence, labels_train,labels_test
 def load_vuln_data():
     data_path = str(Path(__file__).parents[2]) + os.path.sep + 'data' + os.path.sep
     vuln_files = os.listdir(data_path)
-    data_set =  pd.DataFrame(columns = ['app_name', 'vuln_name', 'vuln_desc','severity'])
+    data_set =  pd.DataFrame(columns = ['app_name','app_context', 'vuln_name', 'vuln_desc','severity'])
     grades = []
     for file in vuln_files:
-        vulns = pd.read_csv(data_path + file)
-        dfupdate=vulns.sample(frac=0.1)
-        dfupdate.grade=1
-        vulns.update(dfupdate)
-        #vulns = vulns.drop(vulns.query('grade == 0').sample(frac=.4).index)
-        vulns.app_name = vulns.app_name.str.replace(r'http[s]?://', '')
-        vulns.app_name = vulns.app_name.str.split('/').str[0]
-        vulns.app_name = vulns.app_name.str.split(':').str[0]
-        data_set = data_set.append(vulns[['app_name', 'vuln_name', 'vuln_desc','severity']].copy())
-        grades = np.append(grades, vulns['grade'].astype('int32'))
+        print("Loading file: ", data_path + file)
+        if not file.startswith('.'):
+            vulns = pd.read_csv(data_path + file,quoting=csv.QUOTE_ALL)
+            data_set = data_set.append(vulns[['app_name', 'app_context', 'vuln_name', 'vuln_desc','severity']].copy())
+            grades = np.append(grades, vulns['grade'])
     data_train_sentence, data_test_sentence, labels_train, labels_test = train_test_split(data_set
                                                                                           , grades,
                                                                                           test_size=0.35,
@@ -55,6 +51,7 @@ def prepare_tokenizer_for_training(train_data_sentence):
     tokenizer = Tokenizer(filters='.!"#$%&()*+,-/:;<=>?@[\\]^_`{|}~\t\n', num_words=50000, oov_token="<OOV>")
     data = []
     train_data['app_name'] = 'XXBOS XXAN ' + train_data['app_name'].astype(str)
+    train_data['app_context'] = 'XXAC ' + train_data['app_context'].astype(str)
     train_data['vuln_name'] = 'XXVN ' + train_data['vuln_name'].astype(str)
     train_data['vuln_desc'] = 'XXVD ' + train_data['vuln_desc'].astype(str)
     train_data['severity'] = 'XXSV ' + train_data['severity'].astype(str) + ' XXEOS'
@@ -66,12 +63,16 @@ def prepare_tokenizer_for_training(train_data_sentence):
 def prepare_sequenced_data(setences, tokenizer):
     data = []
     setences['app_name'] = 'XXBOS XXAN ' + setences['app_name'].astype(str)
+    setences['app_context'] = 'XXAC ' + setences['app_context'].astype(str)
     setences['vuln_name'] = 'XXVN ' + setences['vuln_name'].astype(str)
     setences['vuln_desc'] = 'XXVD ' + setences['vuln_desc'].astype(str)
     setences['severity'] = 'XXSV ' + setences['severity'].astype(str) + ' XXEOS'
     # tokenizing app_name
     tokenized_app_name = tokenizer.texts_to_sequences(setences['app_name'].to_numpy())
     tokenized_app_name_padded = pad_sequences(tokenized_app_name, maxlen=20, padding='post')
+    # tokenizing app_context
+    tokenized_app_context = tokenizer.texts_to_sequences(setences['app_context'].to_numpy())
+    tokenized_app_context_padded = pad_sequences(tokenized_app_name, maxlen=20, padding='post')
     # Tokenizing vuln name
     tokenized_vuln_name = tokenizer.texts_to_sequences(setences['vuln_name'].to_numpy())
     tokenized_vuln_name_padded = pad_sequences(tokenized_vuln_name, maxlen=20, padding='post')
@@ -81,9 +82,14 @@ def prepare_sequenced_data(setences, tokenizer):
     # Tokenizing severity
     tokenized_vuln_severity = tokenizer.texts_to_sequences(setences['severity'].to_numpy())
     ####
-    tokenized_data_set = np.concatenate((tokenized_app_name_padded,tokenized_vuln_name_padded, tokenized_vuln_desc_padded, tokenized_vuln_severity), axis=1)
+    tokenized_data_set = np.concatenate((tokenized_app_name_padded,
+                                         tokenized_app_context_padded,
+                                         tokenized_vuln_name_padded,
+                                         tokenized_vuln_desc_padded,
+                                         tokenized_vuln_severity),
+                                        axis=1)
     if isinstance(data, list):
-        data = np.reshape(data, (0, 1043))
+        data = np.reshape(data, (0, 1063))
         data = data.astype('int32')
     data = np.vstack( (data, tokenized_data_set))
     return data
