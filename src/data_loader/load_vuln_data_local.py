@@ -39,7 +39,7 @@ def load_vuln_data():
             grades = np.append(grades, vulns['grade'])
     data_train_sentence, data_test_sentence, labels_train, labels_test = train_test_split(data_set
                                                                                           , grades,
-                                                                                          test_size=0.35,
+                                                                                          test_size=0.30,
                                                                                           random_state=None)
     labels_train = labels_train.astype(int)
     labels_test = labels_test.astype(int)
@@ -78,7 +78,7 @@ def prepare_sequenced_data(setences, tokenizer):
     tokenized_vuln_name_padded = pad_sequences(tokenized_vuln_name, maxlen=20, padding='post')
     # Tokenizing Vuln Description
     tokenized_vuln_desc = tokenizer.texts_to_sequences(setences['vuln_desc'].to_numpy())
-    tokenized_vuln_desc_padded = pad_sequences(tokenized_vuln_desc, maxlen=1000, padding='post')
+    tokenized_vuln_desc_padded = pad_sequences(tokenized_vuln_desc, maxlen=800, padding='post')
     # Tokenizing severity
     tokenized_vuln_severity = tokenizer.texts_to_sequences(setences['severity'].to_numpy())
     ####
@@ -89,7 +89,7 @@ def prepare_sequenced_data(setences, tokenizer):
                                          tokenized_vuln_severity),
                                         axis=1)
     if isinstance(data, list):
-        data = np.reshape(data, (0, 1063))
+        data = np.reshape(data, (0, 863))
         data = data.astype('int32')
     data = np.vstack( (data, tokenized_data_set))
     return data

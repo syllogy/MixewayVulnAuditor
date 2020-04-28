@@ -18,18 +18,18 @@ def test_neural_network(hidden_layers,data_train_sequence, labels_train, data_te
         nn_model = build_nn_model(tokenizer, layer)
         nn_history = nn_model.fit(data_train_sequence, labels_train, epochs=num_epochs, validation_data=(data_test_sequence, labels_test))
         for metric in metrics:
-            plot_graphs(nn_history, metric, '['+metric+'] RNN with LSTM', 'rnn_lstm_'+metric+'_'+str(layer)+'.png')
+            plot_graphs(nn_history, metric, '['+metric+'] NN', 'nn_'+metric+'_'+str(layer)+'.png')
         print("================== END NN FLATEN " + str(layer) + "==================")
         print("================== CNN  " + str(layer) + "===========================")
         cnn_model = build_cnn_model(tokenizer,layer)
         cnn_history = cnn_model.fit(data_train_sequence, labels_train, epochs=num_epochs, validation_data=(data_test_sequence, labels_test))
         for metric in metrics:
-            plot_graphs(cnn_history, metric, '['+metric+'] RNN with LSTM', 'rnn_lstm_'+metric+'_'+str(layer)+'.png')
+            plot_graphs(cnn_history, metric, '['+metric+'] CNN', 'cnn_'+metric+'_'+str(layer)+'.png')
         print("================== END CNN  " + str(layer) + "=======================")
         print("================== RNN  GRU " + str(layer) + "=======================")
         rnn_gru_model = build_rnn_gru_model(tokenizer,layer)
         rnn_gru_history = rnn_gru_model.fit(data_train_sequence, labels_train, epochs=num_epochs, validation_data=(data_test_sequence, labels_test))
         for metric in metrics:
-            plot_graphs(rnn_gru_history, metric, '['+metric+'] RNN with LSTM', 'rnn_lstm_'+metric+'_'+str(layer)+'.png')
+            plot_graphs(rnn_gru_history, metric, '['+metric+'] RNN with GRU', 'rnn_gru_'+metric+'_'+str(layer)+'.png')
         print("================== END RNN GRU " + str(layer) + "====================")
         print("Training the model")
