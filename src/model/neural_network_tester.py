@@ -32,4 +32,5 @@ def test_neural_network(hidden_layers,data_train_sequence, labels_train, data_te
         for metric in metrics:
             plot_graphs(rnn_gru_history, metric, '['+metric+'] RNN with GRU', 'rnn_gru_'+metric+'_'+str(layer)+'.png')
         print("================== END RNN GRU " + str(layer) + "====================")
-        print("Training the model")
+        plot_combined_recall(rnn_lstm_history, rnn_gru_history, nn_history,cnn_history, "neural_network_recall.png");
+        plot_combined_precision(rnn_lstm_history, rnn_gru_history, nn_history,cnn_history, "neural_network_precision.png");

@@ -5,8 +5,8 @@ from model.svm_model import *
 
 data_train_sequence, data_test_sequence, labels_train,labels_test, tokenizer = get_training_test_data_local()
 hidden_layers = [32]
-num_epochs = 10
+num_epochs = 50
 
 test_neural_network(hidden_layers,data_train_sequence, labels_train, data_test_sequence, labels_test, num_epochs, tokenizer)
-test_random_forest(data_train_sequence, labels_train, data_test_sequence, labels_test)
-build_svm_model(data_train_sequence, labels_train, data_test_sequence, labels_test)
+#test_random_forest(data_train_sequence, labels_train, data_test_sequence, labels_test)
+#build_svm_model(data_train_sequence, labels_train, data_test_sequence, labels_test)
