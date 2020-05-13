@@ -1,7 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras.regularizers import l2
-
-from metrics import *
+from model.metrics import *
 
 
 def build_rnn_gru_model(tokenizer, layers):

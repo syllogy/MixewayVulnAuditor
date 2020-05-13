@@ -1,6 +1,7 @@
 import tensorflow as tf
-from metrics import *
+from model.metrics import *
 from tensorflow.keras.regularizers import l2
+
 
 def build_cnn_model(tokenizer, layers):
     model = tf.keras.Sequential([

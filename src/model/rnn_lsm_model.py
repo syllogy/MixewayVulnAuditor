@@ -1,6 +1,5 @@
 import tensorflow as tf
 from tensorflow.keras.regularizers import l2
-from metrics import *
 
 
 def build_rnn_lstm_model(tokenizer, layers):
@@ -12,6 +11,6 @@ def build_rnn_lstm_model(tokenizer, layers):
         tf.keras.layers.Dense(1, activation='sigmoid')
     ])
     model.summary()
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy',f1,precision, recall])
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     print("Layers: ", len(model.layers))
     return model
