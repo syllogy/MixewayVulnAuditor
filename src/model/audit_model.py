@@ -7,7 +7,7 @@ import tensorflow as tf
 import os
 
 hidden_layers = [32]
-num_epochs = 1
+num_epochs = 15
 
 
 def get_trained_model():
