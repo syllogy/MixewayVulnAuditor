@@ -4,7 +4,8 @@ from flask_restful import Resource, Api
 import json
 from collections import namedtuple
 
-from model.audit_model import get_trained_model
+from data_loader.load_vuln_request import load_vuln_from_request
+from model.audit_model import get_trained_model, predict
 
 app = Flask(__name__)
 api = Api(app)
@@ -35,7 +36,7 @@ def audit_vuln():
     response = []
     vulns_to_audit = json.loads(request.data, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
     for vuln in vulns_to_audit:
-        response.append(AuditResult(vuln.id, 0))
+        response.append(AuditResult(vuln.id, predict(model, tokenizer, vuln)))
     return json.dumps(response, default=encode_b)
 
 
