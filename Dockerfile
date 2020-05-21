@@ -10,7 +10,7 @@ WORKDIR ./app
 RUN apt-get update && \
     apt-get -y install python3-pandas
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade --no-cache-dir -r requirements.txt
 
 CMD ["python","/app/src/main/vuln_auditor_server.py"]
 
