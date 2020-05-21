@@ -12,5 +12,5 @@ RUN apt-get update && \
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python","src/main/vuln_auditor_server.py"]
+CMD ["python","/app/src/main/vuln_auditor_server.py"]
 

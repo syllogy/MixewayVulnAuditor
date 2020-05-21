@@ -1,12 +1,13 @@
 #!/usr/bin/python3
-from flask import Flask, request, jsonify
-from flask_restful import Resource, Api
 import json
 from collections import namedtuple
+from flask import Flask, request
+from flask_restful import Api
 
-from data_loader.load_vuln_request import load_vuln_from_request
 from model.audit_model import get_trained_model, predict
-
+import os
+cert = (os.environ['CERTIFICATE'])
+key = (os.environ['PRIVATEKEY'])
 app = Flask(__name__)
 api = Api(app)
 model, tokenizer = get_trained_model()
@@ -41,4 +42,5 @@ def audit_vuln():
 
 
 if __name__ == '__main__':
-    app.run(host="localhost", port=8000, debug=True)
+    context = (cert, key)
+    app.run(host="localhost", port=8445, debug=True, ssl_context=context)
