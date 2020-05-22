@@ -3,7 +3,7 @@ FROM python:3.8-buster
 LABEL maintainer="Grzegorz Siewruk <gsiewruk@gmail.com>"
 
 WORKDIR ./app
-
+ENV PYTHONPATH /app/src
 ADD ./src/ ./src
 COPY ./model/ ./model
 COPY requirements.txt .

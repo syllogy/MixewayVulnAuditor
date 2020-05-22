@@ -3,9 +3,10 @@ import json
 from collections import namedtuple
 from flask import Flask, request
 from flask_restful import Api
-
-from model.audit_model import get_trained_model, predict
 import os
+
+from model.audit_model import predict, get_trained_model
+
 cert = (os.environ['CERTIFICATE'])
 key = (os.environ['PRIVATEKEY'])
 app = Flask(__name__)
