@@ -6,6 +6,7 @@ COPY ./src/ ./app
 COPY ./model/ ./app
 COPY requirements.txt ./app
 WORKDIR ./app
+RUN ls -la
 
 RUN apt-get update && \
     apt-get -y install python3-pandas
