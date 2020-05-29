@@ -33,12 +33,25 @@ def encode_b(obj):
     return obj
 
 
-@app.route('/users', methods=['POST'])
+@app.route('/vuln/perdict', methods=['POST'])
 def audit_vuln():
     response = []
     vulns_to_audit = json.loads(request.data, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
     for vuln in vulns_to_audit:
         response.append(AuditResult(vuln.id, predict(model, tokenizer, vuln)))
+    return json.dumps(response, default=encode_b)
+
+
+@app.route('/vuln/train', methods=['POST'])
+def train_model():
+    response = []
+    vulns_to_audit = json.loads(request.data, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
+    return json.dumps(response, default=encode_b)
+
+
+@app.route('/init', methods=['GET'])
+def init():
+    response = []
     return json.dumps(response, default=encode_b)
 
 
