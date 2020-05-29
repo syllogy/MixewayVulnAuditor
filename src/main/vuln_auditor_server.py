@@ -8,10 +8,6 @@ from flask import Response
 
 from model.audit_model import predict, get_trained_model
 
-cert = (os.environ['CERTIFICATE'])
-#cert = "/Users/gs/pki/cert.crt"
-key = (os.environ['PRIVATEKEY'])
-#key = "/Users/gs/pki/private.key"
 app = Flask(__name__)
 api = Api(app)
 model, tokenizer = get_trained_model()
@@ -59,5 +55,4 @@ def init():
 
 
 if __name__ == '__main__':
-    context = (cert, key)
-    app.run(host="localhost", port=8445, debug=True, ssl_context=context)
+    app.run(host="localhost", port=8445, debug=False)
