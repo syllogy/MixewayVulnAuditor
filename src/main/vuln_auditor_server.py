@@ -4,11 +4,14 @@ from collections import namedtuple
 from flask import Flask, request
 from flask_restful import Api
 import os
+from flask import Response
 
 from model.audit_model import predict, get_trained_model
 
-cert = (os.environ['CERTIFICATE'])
-key = (os.environ['PRIVATEKEY'])
+#cert = (os.environ['CERTIFICATE'])
+cert = "/Users/gs/pki/cert.crt"
+#key = (os.environ['PRIVATEKEY'])
+key = "/Users/gs/pki/private.key"
 app = Flask(__name__)
 api = Api(app)
 model, tokenizer = get_trained_model()
@@ -39,7 +42,7 @@ def audit_vuln():
     vulns_to_audit = json.loads(request.data, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
     for vuln in vulns_to_audit:
         response.append(AuditResult(vuln.id, predict(model, tokenizer, vuln)))
-    return json.dumps(response, default=encode_b)
+    return Response(json.dumps(response, default=encode_b), mimetype='application/json')
 
 
 @app.route('/vuln/train', methods=['POST'])
