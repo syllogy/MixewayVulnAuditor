@@ -8,10 +8,10 @@ from flask import Response
 
 from model.audit_model import predict, get_trained_model
 
-#cert = (os.environ['CERTIFICATE'])
-cert = "/Users/gs/pki/cert.crt"
-#key = (os.environ['PRIVATEKEY'])
-key = "/Users/gs/pki/private.key"
+cert = (os.environ['CERTIFICATE'])
+#cert = "/Users/gs/pki/cert.crt"
+key = (os.environ['PRIVATEKEY'])
+#key = "/Users/gs/pki/private.key"
 app = Flask(__name__)
 api = Api(app)
 model, tokenizer = get_trained_model()
