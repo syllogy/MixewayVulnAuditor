@@ -11,7 +11,8 @@ from model.audit_model import predict, get_trained_model
 app = Flask(__name__)
 api = Api(app)
 model, tokenizer = get_trained_model()
-
+cert = (os.environ['CERTIFICATE'])
+key = (os.environ['PRIVATEKEY'])
 
 class AuditResult(object):
     id = 0
@@ -55,4 +56,5 @@ def init():
 
 
 if __name__ == '__main__':
-    app.run(host="localhost", port=8445, debug=False)
+    context = (cert, key)
+    app.run(host="0.0.0.0", port=8445, debug=False, ssl_context=context)
