@@ -1,3 +1,5 @@
+<img src="https://mixeway.io/wp-content/uploads/2020/07/vuln_auditor.png">
+
 # Mixeway Vuln Auditor
 Mixeway Vuln Auditor is application which is ment to:
 1. Create test suite for Various Machine Learning algorithms to verify possibility to build efficient
@@ -12,7 +14,7 @@ Software Vulnerability Classifier
 # Test suite
 Vuln Auditor contains implementation of test suite for Neural Network, Random Forrest and Support Vector Machine.
 
-###Requirements
+### Requirements
 1. Directory /data/ has to contain `CSV` files with headers of ("app_name","app_context","vuln_name","vuln_desc","severity","grade").
 Test and train data is not provided
 2. TensorFlow 2.0+
@@ -63,11 +65,11 @@ Plots with model metrics will be stored in `/plot/` directory
 
 # Rest API
 
-###Requirements:
+### Requirements:
 - SSL Certificate and KEY avaliable location store in environment variable (`CERTIFICATE` and `PRIVATEKEY`)
 - model directory has to contain model description, if it will be empty model would be created using test data in data directory
 
-###Usage
+### Usage
 `py ./src/main/vuln_auditor_server.py`
 
 ### REST API
@@ -79,8 +81,8 @@ example body:
 [
 	{
 		"id": 1,
-		"appName": "DIAGNOSTICSERVICE",
-		"appContext": "type opensource",
+		"appName": "Apollo",
+		"appContext": "type opensource customer internal",
 		"vulnName": "CVE-2016-1000339",
 		"vulnDescription": "In the Bouncy Castle JCE Provider version 1.55 and earlier the primary engine class used for AES was AESFastEngine. Due to the highly table driven approach used in the algorithm it turns out that if the data channel on the CPU can be monitored the lookup table accesses are sufficient to leak information on the AES key being used. There was also a leak in AESEngine although it was substantially less. XXEOS has been modified to remove any signs of leakage (testing carried out on Intel X86-64) and is now the primary AES class for the BC JCE provider from 1.56. Use of AESFastEngine is now only recommended where otherwise deemed appropriate.",
 		"severity": "Medium"
